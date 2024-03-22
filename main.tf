@@ -16,3 +16,23 @@ terraform {
     }
   }
 }
+
+data "cloudflare_zone" "mstrzele_io" {
+  name = "mstrzele.io"
+}
+
+resource "cloudflare_record" "mstrzele_io" {
+  zone_id = data.cloudflare_zone.mstrzele_io.id
+  type    = "CNAME"
+  name    = "mstrzele.io"
+  value   = "mstrzele.github.io"
+  proxied = true
+}
+
+resource "cloudflare_record" "www" {
+  zone_id = data.cloudflare_zone.mstrzele_io.id
+  type    = "CNAME"
+  name    = "www"
+  value   = "mstrzele.github.io"
+  proxied = true
+}
